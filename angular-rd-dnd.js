@@ -11,7 +11,7 @@
 	function rdDndDraggable($rootScope) {
 	
 		return function (scope, element, attr) {
-				
+							
 				/**
 				 * HTML5 draggable attribute set to true
 				 */  
@@ -21,6 +21,7 @@
 				 * event when mouse over the draggable element
 				 */
 				element.on("mouseover", function(event) {
+					// cursor move when mouse over draggable element
 					element.css("cursor", "move");
 				});
 				
@@ -30,7 +31,9 @@
 				 */
 				element.on("dragstart", function(event) {
 					event.dataTransfer.setData("text/plain", ""); // firefox necessary
+					//save object dragged in rootscope
 					$rootScope.rdModelDraggedElement = scope.$eval(attr.rdDndDraggable);
+					// save index of object dragged (in dropzone table content) in rootscope
 					$rootScope.rdModelDraggedElementIndex = scope.$eval(attr.rdDndDraggableIndex);
 					event.stopPropagation();
 				});
@@ -48,12 +51,13 @@
 	function rdDndDropZone($rootScope, $parse) {
 		
 		return function (scope, element, attr) {
-				
+			
 				/**
 				 * event when click on a drop zone
-				 * to memory the start dropzone of drag and drop
+				 * to memory the original dropzone of drag and drop
 				 */
 				element.on("mousedown", function(event) {
+					// save model content original dropzone of drag and drop
 					$rootScope.rdModelDragFromDropZone = attr.rdDndDropZone;
 				});
 				
@@ -63,9 +67,9 @@
 				element.on('dragover', function(event) {
 					
 					event.preventDefault(); // allows drop
-	                if(element.attr("rd-dnd-dragover-class")) {
+	                if(attr.rdDndDragoverClass) {
 	                	// add styles drag_over
-	                	element.addClass(element.attr("rd-dnd-dragover-class"));
+	                	element.addClass(attr.rdDndDragoverClass);
 	                } else {
 	                	// add styles drag_over
 	                	element.css("background", "#eee");
@@ -80,8 +84,8 @@
 				 */
 				element.on('dragleave', function(event) {
 					// remove class "drag_over" or class defined by user
-	                if(element.attr("rd-dnd-dragover-class")) {
-	                	element.removeClass(element.attr("rd-dnd-dragover-class"));
+	                if(attr.rdDndDragoverClass) {
+	                	element.removeClass(attr.rdDndDragoverClass);
 	                } else {
 	                	// delete styles drag_hover
 	                	element.css("background", "");
@@ -97,8 +101,8 @@
 				element.on('drop', function(event) {
 					event.preventDefault(); // allows drop
 					// remove class "drag_over" or class defined by user
-	                if(element.attr("rd-dnd-dragover-class")) {
-	                	element.removeClass(element.attr("rd-dnd-dragover-class"));
+	                if(attr.rdDndDragoverClass) {
+	                	element.removeClass(attr.rdDndDragoverClass);
 	                } else {
 	                	// delete styles drag_hover
 	                	element.css("background", "");
