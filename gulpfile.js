@@ -1,12 +1,13 @@
 /**
  * Fichier gulpfile.js
- * @file gulpfile.js : Tâches Gulp du projet.
+ * @file gulpfile.js : Tâches Gulp du projet (demo).
  * @namespace gulpfile
  * @author Alexandre HARDOUIN
  */
 
 var gulp = require('gulp');
 var connect = require('gulp-connect');
+var karma = require("gulp-karma-runner");
 
 /**
  * Tâche default : sert l'application en local sur le port 8080
@@ -82,3 +83,15 @@ gulp.task('css', function () {
     .pipe(connect.reload());
 });
 
+/**
+ * Tâches test : run test with karma
+ */
+gulp.task("test", function () {
+	gulp.src(["test/*_test.js"], {"read": false})
+	.pipe( karma.server({
+            "singleRun": true,
+            "frameworks": ["jasmine"],
+            "browsers": ["Chrome"]
+        })
+    );
+});
