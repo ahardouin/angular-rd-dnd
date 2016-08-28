@@ -6,10 +6,12 @@
 	
 	<div class="row">
 	
-		<div class="col-lg-4">
+		<div class="col-lg-3">
 			<div class="panel panel-info" >
 			  <div class="panel-heading">{{models.dropZoneA.title}}</div>
-			  <div rd-dnd-drop-zone="models.dropZoneA.content" class="panel-body">
+			  <div rd-dnd-drop-zone="models.dropZoneA.content"
+			       rd-dnd-dragover-class="drag_over" 
+			  	   class="panel-body">
 			    	<div ng-repeat="item in models.dropZoneA.content"
 			    		 rd-dnd-draggable="item" 
 			    		 rd-dnd-draggable-index="$index" 
@@ -22,7 +24,7 @@
 			  </div>
 			</div>
 		</div>
-		<div class="col-lg-4">
+		<div class="col-lg-3">
 			<div class="panel panel-info">
 			  <div class="panel-heading">{{models.dropZoneB.title}}</div>
 			  <div rd-dnd-drop-zone="models.dropZoneB.content" class="panel-body">
@@ -37,7 +39,7 @@
 			  </div>
 			</div>
 		</div>
-		<div class="col-lg-4">
+		<div class="col-lg-3">
 			<div class="panel panel-info">
 			  <div class="panel-heading">{{models.dropZoneC.title}}</div>
 			  <div rd-dnd-drop-zone="models.dropZoneC.content" class="panel-body">
@@ -53,18 +55,19 @@
 			</div>
 		</div>
 		
+		<div class="col-lg-3">
+			<div class="panel panel-default">
+		         <div class="panel-heading">
+		             <h3 class="panel-title">Generated Model</h3>
+		         </div>
+		         <div class="panel-body">
+		             <pre class="code">{{vm.modelAsJson}}</pre>
+		         </div>
+		     </div>
+		</div>
+		
 	</div>
 	
-	<div class="row">
-	<div class="panel panel-default">
-         <div class="panel-heading">
-             <h3 class="panel-title">Generated Model</h3>
-         </div>
-         <div class="panel-body">
-             <pre class="code">{{vm.modelAsJson}}</pre>
-         </div>
-     </div>
-</div>
 	
 </div>
 
