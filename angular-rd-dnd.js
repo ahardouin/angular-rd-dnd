@@ -8,8 +8,8 @@
 	 */	
 	angular.module("angularRdDnd").directive("rdDndDraggable", rdDndDraggable);
 	
-	function rdDndDraggable() {
-		
+	function rdDndDraggable($rootScope) {
+	
 		return function (scope, element, attr) {
 				
 				/**
@@ -23,14 +23,15 @@
 				element.on("mouseover", function(event) {
 					element.css("cursor", "move");
 				});
-            	
+				
 				/**
 				 * event when drag operation is started
 				 * setting dataTransfer Object for firefox
 				 */
 				element.on("dragstart", function(event) {
 					event.dataTransfer.setData("text/plain", ""); // firefox necessary
-					scope.draggedElement = element;
+					$rootScope.rdModelDraggedElement = scope.$eval(attr.rdDndDraggable);
+					$rootScope.rdModelDraggedElementIndex = scope.$eval(attr.rdDndDraggableIndex);
 					event.stopPropagation();
 				});
 				
@@ -44,9 +45,17 @@
 	 */
 	angular.module("angularRdDnd").directive("rdDndDropZone", rdDndDropZone);
 	
-	function rdDndDropZone() {
+	function rdDndDropZone($rootScope, $parse) {
 		
 		return function (scope, element, attr) {
+				
+				/**
+				 * event when click on a drop zone
+				 * to memory the start dropzone of drag and drop
+				 */
+				element.on("mousedown", function(event) {
+					$rootScope.rdModelDragFromDropZone = attr.rdDndDropZone;
+				});
 				
 				/**
 				 * event when drag over the dropzone
@@ -96,8 +105,13 @@
 	                	element.css("border", "");
 	                	element.css("box-shadow", "");
 	                }
-	                // drop the element dragged
-	                element.append(scope.draggedElement);
+	                // add the element on target dropzone
+	                scope.$eval(attr.rdDndDropZone).push($rootScope.rdModelDraggedElement);
+	                // remove the element on original dropzone
+	                scope.$eval($rootScope.rdModelDragFromDropZone).splice($rootScope.rdModelDraggedElementIndex, 1);
+	                // apply on scope
+	                scope.$apply(); 
+	                
 	                event.stopPropagation();
 	                
 	            });
