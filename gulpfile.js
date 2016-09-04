@@ -7,7 +7,7 @@
 
 var gulp = require('gulp');
 var connect = require('gulp-connect');
-var karma = require("gulp-karma-runner");
+var exec = require('child_process').exec;
 
 /**
  * Tâche default : sert l'application en local sur le port 8080
@@ -87,11 +87,13 @@ gulp.task('css', function () {
  * Tâches test : run test with karma
  */
 gulp.task("test", function () {
-	gulp.src(["test/*_test.js"], {"read": false})
-	.pipe( karma.server({
-            "singleRun": true,
-            "frameworks": ["jasmine"],
-            "browsers": ["Chrome"]
-        })
-    );
+	exec('karma start karma-conf.js --single-run', function(error, stdout, stderr) {
+		if (error) {
+		    console.error(error);
+		    return;
+		  }
+		  console.log(stdout);
+		  console.log(stderr);
+	});
 });
+
