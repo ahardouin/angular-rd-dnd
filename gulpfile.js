@@ -90,7 +90,6 @@ gulp.task("test", function () {
 	exec('karma start karma-conf.js --single-run', function(error, stdout, stderr) {
 		if (error) {
 		    console.error(error);
-		    return;
 		  }
 		  console.log(stdout);
 		  console.log(stderr);
